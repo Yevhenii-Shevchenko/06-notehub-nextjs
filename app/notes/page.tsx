@@ -1,12 +1,30 @@
-import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
+
+import noteService from "@/lib/api";
+import { NOTES_PER_PAGE } from "@/lib/notesConstants";
+
 import NotesClient from "./Notes.client";
 
-function App() {
+export default async function NotesPage() {
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ["notes", 1, ""],
+    queryFn: () =>
+      noteService.fetchNotes({
+        page: 1,
+        perPage: NOTES_PER_PAGE,
+        search: "",
+      }),
+  });
+
   return (
-    <TanStackProvider>
+    <HydrationBoundary state={dehydrate(queryClient)}>
       <NotesClient />
-    </TanStackProvider>
+    </HydrationBoundary>
   );
 }
-
-export default App;

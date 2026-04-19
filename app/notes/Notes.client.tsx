@@ -7,13 +7,12 @@ import { useDebouncedCallback } from "use-debounce";
 import css from "./NotesPage.module.css";
 
 import noteService from "@/lib/api";
+import { NOTES_PER_PAGE } from "@/lib/notesConstants";
 import SearchBox from "@/components/SearchBox/SearchBox";
 import Modal from "@/components/Modal/Modal";
 import NoteForm from "@/components/NoteForm/NoteForm";
 import Pagination from "@/components/Pagination/Pagination";
 import NoteList from "@/components/NoteList/NoteList";
-
-const PER_PAGE = 12;
 
 const NotesClient = () => {
   const [page, setPage] = useState(1);
@@ -27,7 +26,8 @@ const NotesClient = () => {
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["notes", page, search],
-    queryFn: () => noteService.fetchNotes({ page, perPage: PER_PAGE, search }),
+    queryFn: () =>
+      noteService.fetchNotes({ page, perPage: NOTES_PER_PAGE, search }),
     placeholderData: keepPreviousData,
   });
 

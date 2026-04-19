@@ -1,11 +1,17 @@
 "use client";
 
-type ErrorProps = {
+type NotesErrorProps = {
   error: Error;
+  reset: () => void;
+  unstable_retry: () => void;
 };
 
-const Error = ({ error }: ErrorProps) => {
-  return <p>Could not fetch note details. {error.message}</p>;
+const NotesError = ({ error }: NotesErrorProps) => {
+  return (
+    <p role="alert">
+      Something went wrong. {error.message}
+    </p>
+  );
 };
 
-export default Error;
+export default NotesError;
